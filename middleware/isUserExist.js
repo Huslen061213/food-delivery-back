@@ -1,3 +1,5 @@
+const UserModel = require("../schemas/userSchema");
+
 const isUserExist = async (req, res, next) => {
   const { email } = req.body;
   if (!email) {

@@ -6,9 +6,9 @@ const loginUser = async (req, res) => {
 
   const { user } = req;
   try {
-    // const user = await UserModel.findOne({ email });
-    const hashedPassword = user.password;
-    const isPasswordMatching = await bcrypt.compare(password, hashedPassword);
+    const user = await UserModel.findOne({ email });
+
+    const isPasswordMatching = await bcrypt.compare(password, user.password);
 
     if (isPasswordMatching) {
       res.status(200).json(`User: ${user}`);
