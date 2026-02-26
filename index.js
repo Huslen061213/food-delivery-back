@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const connectToDB = require("./db");
@@ -8,8 +10,17 @@ const dishRouter = require("./routes/dishRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 999;
+const corsOrigin = process.env.CORS_ORIGIN;
 
-app.use(cors());
+app.use(
+  cors(
+    corsOrigin
+      ? {
+          origin: corsOrigin.split(",").map((origin) => origin.trim()),
+        }
+      : undefined
+  )
+);
 app.use(express.json({ limit: "10mb" }));
 
 connectToDB();
