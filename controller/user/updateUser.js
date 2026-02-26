@@ -9,9 +9,9 @@ const updateUser = async (req, res) => {
       { email },
       {
         new: true,
-        // mongodb deer oorcloltiig haruulna
+        
         runValidators: true,
-        // schema durmiin daguu oorchlolt hiine
+        
       }
     );
 
