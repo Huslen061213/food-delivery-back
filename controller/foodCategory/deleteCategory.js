@@ -1,16 +1,16 @@
-const UserModel = require("../../schemas/foodCategorySchema");
+const FoodCategoryModel = require("../../schemas/foodCategorySchema");
+const DishModel = require("../../schemas/dishSchema");
 
 const deleteCategory = async (req, res) => {
   const { id } = req.body;
 
-  console.log(id);
-
   try {
-    await UserModel.findByIdAndDelete(id);
+    await FoodCategoryModel.findByIdAndDelete(id);
+    await DishModel.deleteMany({ category: id });
 
-    res.status(200).json(`Category deleted`);
+    res.status(200).json({ message: "Category deleted" });
   } catch (err) {
-    res.status(500).json(`Something went wrong,${err}`);
+    res.status(500).json({ message: "Something went wrong", error: String(err) });
   }
 };
 module.exports = deleteCategory;

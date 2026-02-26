@@ -1,19 +1,11 @@
-const UserModel = require("../../schemas/foodCategorySchema");
+const FoodCategoryModel = require("../../schemas/foodCategorySchema");
 
 const getCategory = async (req, res) => {
-  const { id } = req.body;
-
   try {
-    const data = await UserModel.findById(id);
-    console.log(data);
-
-    if (!data) {
-      throw new Error("User not found");
-    }
-
-    res.status(200).json(`user:${data}`);
+    const data = await FoodCategoryModel.find().sort({ createdAt: 1 });
+    res.status(200).json(data);
   } catch (err) {
-    res.status(500).json(`Something went wrong,${err}`);
+    res.status(500).json({ message: "Something went wrong", error: String(err) });
   }
 };
 module.exports = getCategory;

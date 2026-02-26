@@ -3,20 +3,29 @@ const UserModel = require("../../schemas/userSchema");
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-
-  const { user } = req;
   try {
-    const user = await UserModel.findOne({ email });
+    const user = req.user || (await UserModel.findOne({ email }));
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     const isPasswordMatching = await bcrypt.compare(password, user.password);
 
     if (isPasswordMatching) {
-      res.status(200).json(`User: ${user}`);
+      return res.status(200).json({
+        message: "Login successful",
+        user: {
+          _id: user._id,
+          email: user.email,
+          role: user.role,
+          address: user.address || "",
+        },
+      });
     } else {
-      res.status(400).json("Password doesn't match");
+      return res.status(400).json({ message: "Password doesn't match" });
     }
   } catch (err) {
-    res.status(500).json(`Something went wrong: ${err}`);
+    return res.status(500).json({ message: "Something went wrong", error: String(err) });
   }
 };
 
